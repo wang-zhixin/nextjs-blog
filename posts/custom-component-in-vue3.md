@@ -27,6 +27,7 @@ const props = defineProps({ modelValue: String })
 
 - 组件中要显式定义 emits
   Vue2
+  
 ```javascript
 emits: [
   'update:modelValue'
