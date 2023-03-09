@@ -13,8 +13,7 @@ date: '2023-02-17'
 - 组件中接受的 props 默认名称为 **modelValue**
 
 Vue2
-
-```
+```javascript
 props: {
   modelValue:String,
   text:String
@@ -22,16 +21,19 @@ props: {
 ```
 
 Vue3
-`const props = defineProps({ modelValue: String })`
+```javascript
+const props = defineProps({ modelValue: String })
+```
 
 - 组件中要显式定义 emits
   Vue2
-
-```
+```javascript
 emits: [
   'update:modelValue'
 ]
 ```
 
 Vue3
-`const emits = defineEmits(['update:modelValue'])`
+```javascript
+const emits = defineEmits(['update:modelValue'])
+```
