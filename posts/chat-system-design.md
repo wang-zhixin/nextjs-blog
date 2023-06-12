@@ -1,32 +1,22 @@
 ---
-title: '一次在业务中实现实时对话功能的思考'
+title: '一次在业务中实现实时聊天功能的思考'
 date: '2023-04-23'
 ---
 
-#### 相关涉及
-
-- webworker
-- websocket
-- indexDB
-- pinia
-
 #### 大体构思
 
-Step 1.The chat data is managed globally Based on pinia and indexDB(or localStorage)
-Step 2.Use websocket fetch data in the webworker.and send data to main thread use the postMessage method.
-Step 3.The main thread receive data and render page
+1. 聊天数据使用本地存储的方式(localstorage)，在有缓存的情况下，使用本地优先的策略，不仅可以减小服务端的请求数，还可以更方便的处理发送失败的消息。注意: localstorage最大存储5MB.每次进入前要清理过期的聊天存储
+2. 使用websocket更新每条消息的状态，当一条消息发送时，先存储在了本地缓存(发送中)，同时会通过websocket给服务端推送一条消息，当消息被服务端成功接收后，websocket会推送回一条消息，此时更新消息的状态.（成功 / 失败）
+要注意的是，由于websocket是双向通信，发送和接收并不是一对一的关系，所以要与服务端开发人员协商状态码，根据每次websocket回传的状态码来判断此时是什么样的消息回传
 
 
-#### 具体实现
+#### 边界问题处理
+1. 用户发送了一条消息，此时已推送到服务端，但websocket断开了，客户端没有接收到这条消息的回传，此时在客户端为loading状态,在服务端为success(成功)状态,为了解决这个问题,需要在每次websocket成功连接后，从后端获取一次数据来diff一次差异用来更新状态
+2. 聊天过程中可能网络会断开，所以监听了每次网络连接时都重新连接一次websocket(连接方法做了处理，不会重复连接)
 
-Step 1.The chat data is managed globally Based on pinia and indexDB(or localStorage)
- - constant: chatList
- - methods
-  - insertChat - 发送一条消息时要插入chatList中,即使它发送失败了
-    - 发送文字消息
-    - 发送图片消息
-    - 发送文件(only type .pdf)
-  <!-- - updateChatById - 更新一条聊天的状态,比如一条原本失败的消息现在发送成功了 -->
-  - deleteChatByTempId
-    - 删除一条聊天，by tempId,在设计中,每条消息插入到 chatList 的时候都应该先生成 tempId 字段, 在发送成功后,删除这一条tempId的chat,同时往chatList末尾插入一条带有ID的chat
-  
+#### 其他需要注意的点
+1. 聊天区域高度不固定，随着底部功能区域展开与隐藏（顶部提示聊天次数，病情描述输入框高度）动态计算。
+2. 语音条消息在播放其中一条时，需要重置其他语音条的播放。(否则会出现声音重复)
+3. 聊天中图片的展示单独计算 - 规则：定义最大宽度与最大高度，如果以最大宽度的比例下图片的高度会超出定义的最大高度，则以最大高度的比例展示，否则以最大宽度的比例展示。
+4. IOS系统下无法通过预加载方式获取语音条时长.
+5. 每次发送一条消息或接收一条消息都需要让滚动条滚动到底部.
