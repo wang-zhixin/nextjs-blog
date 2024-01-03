@@ -2,13 +2,11 @@ import Layout from '../../components/layout'
 import Head from 'next/head'
 import Date from '../../components/date'
 import utilStyles from '../../styles/utils.module.css'
-import Link from 'next/link'
 import { getAllPostIds, getPostData } from '../../lib/posts'
 
 export default function Post({ postData }) {
 	return (
 		<Layout>
-			<Link href={'http://192.168.200.119:88/home?cardCode=2233223700000006&signMD5=5991192ab3706a37eb6536fad2590ef5&mallId=1'}>跨项目跳转</Link>
 			<Head>
 				<title>{postData.title}</title>
 			</Head>

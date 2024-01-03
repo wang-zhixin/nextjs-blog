@@ -3,8 +3,7 @@ title: 'Get safe area from ios system in Javascript or Typescript'
 date: '2023-04-25'
 ---
 
-#### Within CSS
-
+### Within CSS
 ```css
 :root {
   --sat: env(safe-area-inset-top);
@@ -14,8 +13,7 @@ date: '2023-04-25'
 }
 ```
 
-#### Within JS
-
+### Within JS
 ```javascript
 getComputedStyle(document.documentElement).getPropertyValue('--sat')
 ```
