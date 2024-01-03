@@ -5,9 +5,11 @@
     "build": "next build",
     "start": "next start"
   },
+  "packageManager": "pnpm@8.1.0",
   "dependencies": {
     "clsx": "^1.2.1",
     "date-fns": "^2.29.3",
+    "dayjs": "^1.11.10",
     "gray-matter": "^4.0.3",
     "next": "latest",
     "react": "18.2.0",
