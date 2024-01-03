@@ -23,6 +23,9 @@ pre {
   padding: 20px 0;
   background: transparent;
   overflow-x: auto;
+
+  /* border-radius: 8px;
+  background-color: #f9f9f9; */
 }
 
 code {
@@ -36,8 +39,19 @@ code {
   transition: color .5s;
 }
 
-pre, code, kbd, samp {
-  font-family: ui-monospace, SFMono-Regular,"SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+pre,
+code,
+kbd,
+samp {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+div[class*=language-] {
+  position: relative;
+  margin: 16px -24px;
+  background-color: var(--vp-code-block-bg);
+  overflow-x: auto;
+  transition: background-color .5s
 }
 
 * {
